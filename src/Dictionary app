@@ -1,1 +1,114 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;1
+public class Dictionary {
+    private static final Map<String, String> dictionary = new HashMap<>();
+    public static void main(String[] args) {
+        populateSampleWords();
+        try (Scanner sc = new Scanner(System.in)) {
+            while (true) {
+                printMenu();
+                String choice = sc.nextLine().trim();
+                switch (choice) {
+                    case "1":
+                        searchWord(sc);
+                        break;
+                    case "2":
+                        addWord(sc);
+                        break;
+                    case "3":
+                        deleteWord(sc);
+                        break;
+                    case "4":
+                        viewAll();
+                        break;
+                    case "5":
+                        System.out.println("Exiting. Goodbye!");
+                        return;
+                    default:
+                        System.out.println("Invalid choice. Please enter 1-5.");
+                }
+                System.out.println(); // blank line for readability
+            }
+        }
+    }
+    private static void populateSampleWords() {
+        // store keys in lowercase for case-insensitive lookup
+        dictionary.put("java", "A high-level, class-based, object-oriented programming language.");
+        dictionary.put("array", "A collection of elements identified by index.");
+        dictionary.put("hashmap", "A data structure that stores key-value pairs with fast lookup.");
+        dictionary.put("recursion", "A technique where a method calls itself.");
+        dictionary.put("stack", "A data structure that follows LIFO (last in, first out).");
+        dictionary.put("queue", "A data structure that follows FIFO (first in, first out).");
+        dictionary.put("polymorphism", "Ability of objects to take many forms in OOP.");
+    }
+
+    private static void printMenu() {
+        System.out.println("=== Dictionary App ===");
+        System.out.println("1. Search Word");
+        System.out.println("2. Add Word");
+        System.out.println("3. Delete Word");
+        System.out.println("4. View All Words");
+        System.out.println("5. Exit");
+        System.out.print("Enter choice (1-5): ");
+    }
+    private static void searchWord(Scanner sc) {
+        System.out.print("Enter word to search: ");
+        String word = sc.nextLine().trim();
+        if (word.isEmpty()) {
+            System.out.println("Please enter a valid word.");
+            return;
+        }
+        String meaning = dictionary.get(word.toLowerCase());
+        if (meaning != null) {
+            System.out.println("Meaning: " + meaning);
+        } else {
+            System.out.println("Word not found.");
+        }
+    }
+    private static void addWord(Scanner sc) {
+        System.out.print("Enter word to add: ");
+        String word = sc.nextLine().trim();
+        if (word.isEmpty()) {
+            System.out.println("Please enter a valid word.");
+            return;
+        }
+        System.out.print("Enter meaning: ");
+        String meaning = sc.nextLine().trim();
+        if (meaning.isEmpty()) {
+            System.out.println("Please enter a valid meaning.");
+            return;
+        }
+        dictionary.put(word.toLowerCase(), meaning);
+        System.out.println("Word added/updated successfully.");
+    }
+    private static void deleteWord(Scanner sc) {
+        System.out.print("Enter word to delete: ");
+        String word = sc.nextLine().trim();
+        if (word.isEmpty()) {
+            System.out.println("Please enter a valid word.");
+            return;
+        }
+        String removed = dictionary.remove(word.toLowerCase());
+        if (removed != null) {
+            System.out.println("Deleted successfully.");
+        } else {
+            System.out.println("Word not found.");
+        }
+    }
+    private static void viewAll() {
+        if (dictionary.isEmpty()) {
+            System.out.println("Dictionary is empty.");
+            return;
+        }
+        System.out.println("All words in dictionary:");
+        for (Map.Entry<String, String> e : dictionary.entrySet()) {
+            System.out.println(capitalize(e.getKey()) + " : " + e.getValue());
+        }
+    }
+    private static String capitalize(String s) {
+        if (s == null || s.isEmpty()) return s;
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
+}
 
