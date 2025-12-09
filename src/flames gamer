@@ -1,1 +1,44 @@
+import java.util.*;
+public class Flames {
+    public static void main(String[] args) {
+        Scanner kk = new Scanner(System.in);
+        System.out.println("Enter the first name:");
+        String str1 = kk.nextLine().trim();
+        System.out.println("Enter the second name:");
+        String str2 = kk.nextLine().trim();
+        kk.close();
+        String result = flames(str1, str2);
+        System.out.println("Result: " + result);
+    }
+    public static String flames(String s1, String s2) {
+        String name1 = s1.replaceAll("[^A-Za-z]", "").toLowerCase();
+        String name2 = s2.replaceAll("[^A-Za-z]", "").toLowerCase();
+        Map<Character, Integer> count = new HashMap<>();
+        for (char c : name1.toCharArray()) count.put(c, count.getOrDefault(c, 0) + 1);
+        for (char c : name2.toCharArray()) count.put(c, count.getOrDefault(c, 0) - 1);
+        int k = 0;
+        for (int v : count.values()) k += Math.abs(v);
+        System.out.println("Unmatched letters count: " + k);
+        if (k == 0) return "Perfect Match (all letters cancel)";
+        String flamesStr = "flames";
+        LinkedList<Character> list = new LinkedList<>();
+        for (char c : flamesStr.toCharArray()) list.add(c);
+        int index = 0;
+        while (list.size() > 1) {
+            index = (index + k - 1) % list.size();
+            list.remove(index);
+        }
+        char finalChar = list.getFirst();
+        switch (finalChar) {
+            case 'f': return "Friendship";
+            case 'l': return "Love";
+            case 'a': return "Affection / Attraction";
+            case 'm': return "Marriage";
+            case 'e': return "Enemies";
+            case 's': return "Siblings / Sister";
+            default:  return "Unknown";
+        }
+    }
+}
+
 
